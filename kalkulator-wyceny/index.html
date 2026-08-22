@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ARTIFACT:HEAD -->
+<title>Kalkulator Wyceny Projektu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* ============================================================
+   PALETA / TOKENY
+   ============================================================ */
+:root{
+  --ground:#EDF0F4;
+  --surface:#FFFFFF;
+  --surface-2:#F5F7FA;
+  --ink:#0E1621;
+  --tekst:#0E1621;
+  --tekst-2:#3D4A5C;
+  --tekst-3:#6B7A8D;
+  --linia:#D4DBE4;
+  --linia-mocna:#B9C4D1;
+  --akcent:#2B4C8C;
+  --akcent-tekst:#2B4C8C;
+  --akcent-mgla:#E3EAF6;
+  --panel:#0E1621;
+  --panel-tekst:#F2F5F9;
+  --panel-tekst-2:#9FB0C4;
+  --panel-linia:#2A3644;
+  --ok:#1F6B45;
+  --ok-tlo:#E1F1E8;
+  --uwaga:#8A5712;
+  --uwaga-tlo:#F7EEDC;
+  --stop:#8E3231;
+  --stop-tlo:#F7E4E3;
+  --cien:0 1px 2px rgba(14,22,33,.06), 0 8px 24px -12px rgba(14,22,33,.18);
+  --r:4px;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A0F16;
+    --surface:#131B24;
+    --surface-2:#18212B;
+    --ink:#E7ECF3;
+    --tekst:#E7ECF3;
+    --tekst-2:#B0BCCB;
+    --tekst-3:#7D8C9E;
+    --linia:#26313E;
+    --linia-mocna:#374556;
+    --akcent:#88ABEB;
+    --akcent-tekst:#9DBBF2;
+    --akcent-mgla:#1A2537;
+    --panel:#182231;
+    --panel-tekst:#F2F5F9;
+    --panel-tekst-2:#A3B4C8;
+    --panel-linia:#2E3B4C;
+    --ok:#6FC694;
+    --ok-tlo:#16301F;
+    --uwaga:#DDAF57;
+    --uwaga-tlo:#332714;
+    --stop:#E58481;
+    --stop-tlo:#361D1D;
+    --cien:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A0F16;
+  --surface:#131B24;
+  --surface-2:#18212B;
+  --ink:#E7ECF3;
+  --tekst:#E7ECF3;
+  --tekst-2:#B0BCCB;
+  --tekst-3:#7D8C9E;
+  --linia:#26313E;
+  --linia-mocna:#374556;
+  --akcent:#88ABEB;
+  --akcent-tekst:#9DBBF2;
+  --akcent-mgla:#1A2537;
+  --panel:#182231;
+  --panel-tekst:#F2F5F9;
+  --panel-tekst-2:#A3B4C8;
+  --panel-linia:#2E3B4C;
+  --ok:#6FC694;
+  --ok-tlo:#16301F;
+  --uwaga:#DDAF57;
+  --uwaga-tlo:#332714;
+  --stop:#E58481;
+  --stop-tlo:#361D1D;
+  --cien:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--tekst);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.02em}
+p{margin:0}
+a{color:var(--akcent-tekst)}
+
+/* ============================================================
+   NAGŁÓWEK
+   ============================================================ */
+.naglowek{
+  border-bottom:1px solid var(--linia);
+  background:
+    repeating-linear-gradient(to right, var(--linia) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(to bottom, var(--linia) 0 1px, transparent 1px 48px),
+    var(--surface);
+  background-blend-mode:normal;
+}
+.naglowek-tresc{
+  max-width:1240px;margin:0 auto;padding:44px 24px 40px;
+  background:linear-gradient(to bottom, transparent, var(--surface) 88%);
+}
+.eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--akcent-tekst);display:flex;align-items:center;gap:10px;margin-bottom:14px;
+}
+.eyebrow::before{content:"";width:28px;height:1px;background:currentColor;display:block}
+.naglowek h1{font-size:clamp(30px,4.4vw,50px);font-weight:700;line-height:1.04;max-width:16ch}
+.lead{margin-top:16px;max-width:62ch;color:var(--tekst-2);font-size:17px}
+.meta-lista{
+  display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:24px;
+  font-family:var(--mono);font-size:12.5px;color:var(--tekst-3);
+}
+.meta-lista span{display:flex;align-items:center;gap:7px}
+.kropka{width:5px;height:5px;border-radius:50%;background:var(--akcent);display:block}
+
+/* ============================================================
+   UKŁAD
+   ============================================================ */
+.uklad{
+  max-width:1240px;margin:0 auto;padding:36px 24px 120px;
+  display:grid;grid-template-columns:minmax(0,1fr) 384px;gap:44px;align-items:start;
+}
+@media (max-width:1000px){
+  .uklad{grid-template-columns:minmax(0,1fr);gap:28px;padding-bottom:96px}
+}
+
+/* ============================================================
+   FORMULARZ
+   ============================================================ */
+.krok{
+  background:var(--surface);border:1px solid var(--linia);border-radius:var(--r);
+  padding:26px 26px 30px;margin-bottom:18px;box-shadow:var(--cien);
+}
+.krok-glowa{display:flex;gap:14px;align-items:baseline;padding-bottom:8px;margin-bottom:22px;border-bottom:1px solid var(--linia)}
+.krok-nr{font-family:var(--mono);font-size:12px;color:var(--akcent-tekst);letter-spacing:.08em}
+.krok h2{font-size:19px;font-weight:600}
+.krok-opis{font-size:13.5px;color:var(--tekst-3);margin-left:auto;text-align:right;max-width:32ch}
+@media (max-width:620px){.krok-opis{display:none}.krok{padding:20px 18px 24px}}
+
+.siatka{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.siatka .pelna{grid-column:1/-1}
+@media (max-width:620px){.siatka{grid-template-columns:minmax(0,1fr)}}
+
+fieldset{border:0;padding:0;margin:0;min-width:0}
+legend,.etykieta{
+  display:block;font-size:12px;font-family:var(--mono);letter-spacing:.09em;
+  text-transform:uppercase;color:var(--tekst-3);margin-bottom:9px;padding:0;
+}
+.podpowiedz{font-size:12.5px;color:var(--tekst-3);margin-top:7px;line-height:1.45}
+
+input[type="text"],input[type="email"],input[type="tel"],input[type="number"],select,textarea{
+  width:100%;font-family:var(--body);font-size:15px;color:var(--tekst);
+  background:var(--surface-2);border:1px solid var(--linia-mocna);border-radius:var(--r);
+  padding:10px 12px;transition:border-color .15s, box-shadow .15s;
+}
+input[type="number"]{font-family:var(--mono);font-variant-numeric:tabular-nums}
+textarea{resize:vertical;min-height:88px}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 18px) calc(50% + 1px),calc(100% - 13px) calc(50% + 1px);
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:36px;cursor:pointer}
+input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:none;border-color:var(--akcent);box-shadow:0 0 0 3px var(--akcent-mgla);
+}
+
+/* pigułki (radio) */
+.pigulki{display:flex;flex-wrap:wrap;gap:7px}
+.pigulka{position:relative;display:inline-flex}
+.pigulka input{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0}
+.pigulka span{
+  display:block;padding:7px 13px;border:1px solid var(--linia-mocna);border-radius:100px;
+  font-size:13.5px;color:var(--tekst-2);background:var(--surface-2);cursor:pointer;
+  transition:background .15s,border-color .15s,color .15s;
+}
+.pigulka input:checked + span{background:var(--akcent);border-color:var(--akcent);color:#fff;font-weight:500}
+:root[data-theme="dark"] .pigulka input:checked + span{color:#0B121C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pigulka input:checked + span{color:#0B121C}}
+.pigulka input:focus-visible + span{outline:2px solid var(--akcent);outline-offset:2px}
+.pigulka:hover span{border-color:var(--akcent)}
+
+/* checkboxy */
+.opcje{display:grid;gap:8px}
+.opcje.dwie{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:620px){.opcje.dwie{grid-template-columns:minmax(0,1fr)}}
+.opcja{
+  display:flex;gap:11px;align-items:flex-start;padding:11px 13px;border:1px solid var(--linia);
+  border-radius:var(--r);background:var(--surface-2);cursor:pointer;transition:border-color .15s,background .15s;
+}
+.opcja:hover{border-color:var(--akcent)}
+.opcja input{margin:3px 0 0;accent-color:var(--akcent);width:15px;height:15px;flex:none}
+.opcja-tresc{min-width:0}
+.opcja-nazwa{font-size:14px;display:block;line-height:1.35}
+.opcja-cena{font-family:var(--mono);font-size:11.5px;color:var(--tekst-3);display:block;margin-top:2px}
+.opcja:has(input:checked){border-color:var(--akcent);background:var(--akcent-mgla)}
+
+/* metraż: suwak + liczba */
+.metraz-wiersz{display:flex;gap:14px;align-items:center}
+.metraz-wiersz input[type="number"]{width:112px;flex:none;text-align:right}
+input[type="range"]{flex:1;accent-color:var(--akcent);min-width:0}
+.jednostka{font-family:var(--mono);font-size:13px;color:var(--tekst-3)}
+
+/* ============================================================
+   PANEL WYCENY
+   ============================================================ */
+.panel-kolumna{position:sticky;top:22px}
+@media (max-width:1000px){.panel-kolumna{position:static}}
+.panel{
+  background:var(--panel);color:var(--panel-tekst);border-radius:var(--r);
+  overflow:hidden;box-shadow:var(--cien);border:1px solid var(--panel-linia);
+}
+.panel-gora{padding:24px 24px 22px;border-bottom:1px solid var(--panel-linia)}
+.panel-etykieta{
+  font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--panel-tekst-2);display:block;margin-bottom:12px;
+}
+.kwota{font-family:var(--display);font-size:clamp(28px,3.4vw,36px);font-weight:600;letter-spacing:-.03em;
+  line-height:1.05;font-variant-numeric:tabular-nums}
+.kwota .waluta{font-size:.5em;font-weight:500;color:var(--panel-tekst-2);margin-left:6px;letter-spacing:0}
+.kwota-pod{font-family:var(--mono);font-size:12.5px;color:var(--panel-tekst-2);margin-top:10px}
+.skala{height:5px;background:var(--panel-linia);border-radius:100px;margin-top:18px;position:relative;overflow:hidden}
+.skala-wypelnienie{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,var(--akcent),#7FA5E8);transition:left .35s ease,right .35s ease}
+.skala-podpisy{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--panel-tekst-2);margin-top:7px}
+
+.panel-sekcja{padding:20px 24px;border-bottom:1px solid var(--panel-linia)}
+.pozycje{display:grid;gap:9px;font-size:13.5px}
+.pozycja{display:flex;justify-content:space-between;gap:16px;align-items:baseline}
+.pozycja-nazwa{color:var(--panel-tekst-2);min-width:0}
+.pozycja-kwota{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;font-size:13px}
+.pozycja.suma{border-top:1px solid var(--panel-linia);padding-top:10px;margin-top:3px;font-weight:600}
+.pozycja.suma .pozycja-nazwa{color:var(--panel-tekst)}
+
+.status{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--r);font-size:13.5px;line-height:1.45}
+.status-znacznik{width:8px;height:8px;border-radius:50%;flex:none;margin-top:6px}
+.status.zielony{background:rgba(111,198,148,.12);color:#BFE8D2}
+.status.zielony .status-znacznik{background:#6FC694}
+.status.zolty{background:rgba(221,175,87,.12);color:#EFD9A8}
+.status.zolty .status-znacznik{background:#DDAF57}
+.status.czerwony{background:rgba(229,132,129,.12);color:#F2C0BE}
+.status.czerwony .status-znacznik{background:#E58481}
+.status b{display:block;color:var(--panel-tekst);font-weight:600;margin-bottom:2px}
+
+.panel-dol{padding:20px 24px 24px;display:grid;gap:10px}
+.przycisk{
+  display:block;width:100%;text-align:center;padding:13px 18px;border-radius:var(--r);
+  font-family:var(--body);font-size:15px;font-weight:600;cursor:pointer;border:1px solid transparent;
+  text-decoration:none;transition:filter .15s,background .15s;
+}
+.przycisk.glowny{background:var(--akcent);color:#fff}
+:root[data-theme="dark"] .przycisk.glowny{color:#0B121C}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .przycisk.glowny{color:#0B121C}}
+.przycisk.glowny:hover{filter:brightness(1.12)}
+.przycisk.drugi{background:transparent;color:var(--panel-tekst);border-color:var(--panel-linia)}
+.przycisk.drugi:hover{background:rgba(255,255,255,.05)}
+.przycisk:focus-visible{outline:2px solid var(--akcent);outline-offset:2px}
+.panel-nota{font-size:11.5px;color:var(--panel-tekst-2);line-height:1.5;margin-top:4px}
+
+/* pasek mobilny */
+.pasek-mobilny{
+  display:none;position:fixed;left:0;right:0;bottom:0;z-index:20;
+  background:var(--panel);color:var(--panel-tekst);border-top:1px solid var(--panel-linia);
+  padding:11px 18px;align-items:center;justify-content:space-between;gap:14px;
+  box-shadow:0 -8px 24px -14px rgba(0,0,0,.5);
+}
+.pasek-mobilny .etykieta-m{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--panel-tekst-2);display:block}
+.pasek-mobilny .kwota-m{font-family:var(--display);font-size:19px;font-weight:600;font-variant-numeric:tabular-nums}
+.pasek-mobilny button{
+  border:0;background:var(--akcent);color:#fff;padding:10px 16px;border-radius:var(--r);
+  font-family:var(--body);font-size:14px;font-weight:600;cursor:pointer;flex:none;
+}
+@media (max-width:1000px){.pasek-mobilny{display:flex}}
+
+/* ============================================================
+   STOPKA / OBJAŚNIENIA
+   ============================================================ */
+.objasnienia{
+  max-width:1240px;margin:0 auto;padding:0 24px 90px;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;
+}
+@media (max-width:860px){.objasnienia{grid-template-columns:minmax(0,1fr);padding-bottom:120px}}
+.karta-info{border-top:2px solid var(--ink);padding-top:16px}
+.karta-info h3{font-size:15px;font-weight:600;margin-bottom:9px}
+.karta-info p,.karta-info li{font-size:13.5px;color:var(--tekst-2);line-height:1.6}
+.karta-info ul{margin:0;padding-left:17px}
+.karta-info li{margin-bottom:5px}
+
+.toast{
+  position:fixed;left:50%;bottom:88px;transform:translate(-50%,14px);
+  background:var(--ink);color:var(--ground);padding:11px 20px;border-radius:100px;
+  font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:40;
+}
+.toast.widoczny{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<!-- ARTIFACT:BODY -->
+<header class="naglowek">
+  <div class="naglowek-tresc">
+    <div class="eyebrow">Wstępna wycena online</div>
+    <h1>Kalkulator wyceny projektu</h1>
+    <p class="lead">Odpowiedz na kilka pytań o swojej inwestycji — po drodze zobaczysz orientacyjne widełki cenowe i czas realizacji. To wycena wstępna, przygotowana po to, żebyśmy oboje wiedzieli, czy rozmawiamy o tej samej skali. Wiążącą ofertę przygotowuję po rozmowie i przejrzeniu dokumentów działki.</p>
+    <div class="meta-lista">
+      <span><i class="kropka"></i>Wypełnienie zajmuje ok. 3 minuty</span>
+      <span><i class="kropka"></i>Wycena liczy się na bieżąco</span>
+      <span><i class="kropka"></i>Odpowiadam w ciągu 2 dni roboczych</span>
+    </div>
+  </div>
+</header>
+
+<main class="uklad">
+  <form id="formularz" novalidate>
+
+    <!-- 01 -->
+    <section class="krok">
+      <div class="krok-glowa">
+        <span class="krok-nr">01</span>
+        <h2>Inwestycja</h2>
+        <p class="krok-opis">Od tego zależy, ile branż i uzgodnień wejdzie w zakres.</p>
+      </div>
+      <div class="siatka">
+        <div class="pelna">
+          <fieldset>
+            <legend>Co projektujemy</legend>
+            <div class="pigulki" role="radiogroup">
+              <label class="pigulka"><input type="radio" name="typ" value="dom" checked><span>Dom jednorodzinny</span></label>
+              <label class="pigulka"><input type="radio" name="typ" value="blizniak"><span>Bliźniak / segment</span></label>
+              <label class="pigulka"><input type="radio" name="typ" value="wielorodzinny"><span>Budynek wielorodzinny</span></label>
+              <label class="pigulka"><input type="radio" name="typ" value="uslugowy"><span>Obiekt usługowy</span></label>
+              <label class="pigulka"><input type="radio" name="typ" value="rozbudowa"><span>Rozbudowa / przebudowa</span></label>
+              <label class="pigulka"><input type="radio" name="typ" value="rekreacyjny"><span>Dom letniskowy</span></label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="pelna">
+          <label class="etykieta" for="zakres">Zakres opracowania</label>
+          <select id="zakres" name="zakres">
+            <option value="komplet" selected>Komplet — koncepcja, projekt budowlany, techniczny i branże</option>
+            <option value="budowlany">Koncepcja + projekt budowlany do pozwolenia</option>
+            <option value="koncepcja">Sama koncepcja architektoniczna</option>
+            <option value="wykonawczy">Komplet + projekt wykonawczy z detalami</option>
+            <option value="adaptacja">Adaptacja projektu gotowego</option>
+          </select>
+          <p class="podpowiedz" id="zakres-podpowiedz">Najczęściej wybierany wariant — dokumentacja gotowa do złożenia w urzędzie i do wyceny przez wykonawcę.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section class="krok">
+      <div class="krok-glowa">
+        <span class="krok-nr">02</span>
+        <h2>Budynek</h2>
+        <p class="krok-opis">Metraż i bryła to główne czynniki ceny.</p>
+      </div>
+      <div class="siatka">
+        <div class="pelna">
+          <label class="etykieta" for="metraz">Powierzchnia użytkowa</label>
+          <div class="metraz-wiersz">
+            <input type="range" id="metraz-suwak" min="40" max="600" step="5" value="160" aria-label="Powierzchnia użytkowa — suwak">
+            <input type="number" id="metraz" name="metraz" min="30" max="3000" step="1" value="160">
+            <span class="jednostka">m²</span>
+          </div>
+          <p class="podpowiedz">Liczona po podłogach wszystkich kondygnacji, bez garażu i tarasów. Nie znasz dokładnej — podaj przybliżoną.</p>
+        </div>
+        <fieldset class="pelna">
+          <legend>Kondygnacje</legend>
+          <div class="pigulki" role="radiogroup">
+            <label class="pigulka"><input type="radio" name="kondygnacje" value="parter"><span>Parterowy</span></label>
+            <label class="pigulka"><input type="radio" name="kondygnacje" value="poddasze" checked><span>Parter + poddasze użytkowe</span></label>
+            <label class="pigulka"><input type="radio" name="kondygnacje" value="dwie"><span>Dwie pełne kondygnacje</span></label>
+            <label class="pigulka"><input type="radio" name="kondygnacje" value="trzy"><span>Trzy i więcej</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Piwnica</legend>
+          <div class="pigulki" role="radiogroup">
+            <label class="pigulka"><input type="radio" name="piwnica" value="nie" checked><span>Bez piwnicy</span></label>
+            <label class="pigulka"><input type="radio" name="piwnica" value="czesciowa"><span>Częściowa</span></label>
+            <label class="pigulka"><input type="radio" name="piwnica" value="tak"><span>Pełna</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Garaż</legend>
+          <div class="pigulki" role="radiogroup">
+            <label class="pigulka"><input type="radio" name="garaz" value="brak"><span>Brak</span></label>
+            <label class="pigulka"><input type="radio" name="garaz" value="wbryle" checked><span>W bryle domu</span></label>
+            <label class="pigulka"><input type="radio" name="garaz" value="wolnostojacy"><span>Wolnostojący</span></label>
+            <label class="pigulka"><input type="radio" name="garaz" value="wiata"><span>Wiata</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="pelna">
+          <legend>Dach</legend>
+          <div class="pigulki" role="radiogroup">
+            <label class="pigulka"><input type="radio" name="dach" value="plaski"><span>Płaski</span></label>
+            <label class="pigulka"><input type="radio" name="dach" value="jednospadowy"><span>Jednospadowy</span></label>
+            <label class="pigulka"><input type="radio" name="dach" value="dwuspadowy" checked><span>Dwuspadowy</span></label>
+            <label class="pigulka"><input type="radio" name="dach" value="kopertowy"><span>Kopertowy</span></label>
+            <label class="pigulka"><input type="radio" name="dach" value="wielospadowy"><span>Wielospadowy</span></label>
+            <label class="pigulka"><input type="radio" name="dach" value="lamany"><span>Mansardowy / łamany</span></label>
+          </div>
+        </fieldset>
+        <div>
+          <label class="etykieta" for="pokoje">Liczba pokoi</label>
+          <input type="number" id="pokoje" name="pokoje" min="1" max="20" step="1" value="4">
+          <p class="podpowiedz">Sypialnie i gabinety, bez salonu i kuchni.</p>
+        </div>
+        <div>
+          <label class="etykieta" for="lazienki">Liczba łazienek</label>
+          <input type="number" id="lazienki" name="lazienki" min="1" max="10" step="1" value="2">
+          <p class="podpowiedz">Wliczając WC gościnne i pralnię z odpływem.</p>
+        </div>
+        <fieldset class="pelna">
+          <legend>Bryła i detal</legend>
+          <div class="pigulki" role="radiogroup">
+            <label class="pigulka"><input type="radio" name="bryla" value="prosta"><span>Prosta, zwarta</span></label>
+            <label class="pigulka"><input type="radio" name="bryla" value="umiarkowana" checked><span>Umiarkowana</span></label>
+            <label class="pigulka"><input type="radio" name="bryla" value="zlozona"><span>Złożona — wykusze, antresole, duże przeszklenia</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="pelna">
+          <legend>Standard wykończenia</legend>
+          <div class="pigulki" role="radiogroup">
+            <label class="pigulka"><input type="radio" name="standard" value="podstawowy"><span>Podstawowy</span></label>
+            <label class="pigulka"><input type="radio" name="standard" value="podwyzszony" checked><span>Podwyższony</span></label>
+            <label class="pigulka"><input type="radio" name="standard" value="premium"><span>Premium</span></label>
+          </div>
+        </fieldset>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="krok">
+      <div class="krok-glowa">
+        <span class="krok-nr">03</span>
+        <h2>Działka</h2>
+        <p class="krok-opis">Warunki terenowe potrafią dołożyć osobne opracowania.</p>
+      </div>
+      <div class="siatka">
+        <div>
+          <label class="etykieta" for="dzialka">Powierzchnia działki</label>
+          <div class="metraz-wiersz">
+            <input type="number" id="dzialka" name="dzialka" min="100" max="100000" step="10" value="900">
+            <span class="jednostka">m²</span>
+          </div>
+        </div>
+        <div>
+          <label class="etykieta" for="odleglosc">Odległość od pracowni</label>
+          <select id="odleglosc" name="odleglosc">
+            <option value="blisko" selected>Do 50 km</option>
+            <option value="srednio">50–150 km</option>
+            <option value="daleko">Powyżej 150 km</option>
+            <option value="zagranica">Poza Polską</option>
+          </select>
+        </div>
+        <fieldset class="pelna">
+          <legend>Status działki</legend>
+          <div class="pigulki" role="radiogroup">
+            <label class="pigulka"><input type="radio" name="status" value="mam" checked><span>Jest moja</span></label>
+            <label class="pigulka"><input type="radio" name="status" value="kupuje"><span>W trakcie zakupu</span></label>
+            <label class="pigulka"><input type="radio" name="status" value="szukam"><span>Dopiero szukam</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="pelna">
+          <legend>Warunki terenowe — zaznacz, jeśli dotyczą</legend>
+          <div class="opcje dwie">
+            <label class="opcja"><input type="checkbox" name="warunki" value="spadek" data-mnoznik="1.06"><span class="opcja-tresc"><span class="opcja-nazwa">Znaczny spadek terenu lub skarpa</span><span class="opcja-cena">+6% — więcej pracy przy posadowieniu</span></span></label>
+            <label class="opcja"><input type="checkbox" name="warunki" value="konserwator" data-mnoznik="1.10"><span class="opcja-tresc"><span class="opcja-nazwa">Strefa ochrony konserwatorskiej</span><span class="opcja-cena">+10% — dodatkowe uzgodnienia</span></span></label>
+            <label class="opcja"><input type="checkbox" name="warunki" value="wody" data-mnoznik="1.04"><span class="opcja-tresc"><span class="opcja-nazwa">Wysoki poziom wód gruntowych</span><span class="opcja-cena">+4%</span></span></label>
+            <label class="opcja"><input type="checkbox" name="warunki" value="ksztalt" data-mnoznik="1.05"><span class="opcja-tresc"><span class="opcja-nazwa">Działka wąska lub o nietypowym kształcie</span><span class="opcja-cena">+5%</span></span></label>
+            <label class="opcja"><input type="checkbox" name="warunki" value="wz" data-kwota="2500"><span class="opcja-tresc"><span class="opcja-nazwa">Brak planu miejscowego — potrzebne warunki zabudowy</span><span class="opcja-cena">+2 500 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="warunki" value="media" data-kwota="1800"><span class="opcja-tresc"><span class="opcja-nazwa">Brak przyłączy — do zaprojektowania</span><span class="opcja-cena">+1 800 zł</span></span></label>
+          </div>
+        </fieldset>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section class="krok">
+      <div class="krok-glowa">
+        <span class="krok-nr">04</span>
+        <h2>Dodatki i termin</h2>
+        <p class="krok-opis">Wszystko opcjonalne — odznaczone nie wchodzą w cenę.</p>
+      </div>
+      <div class="siatka">
+        <fieldset class="pelna">
+          <legend>Dodatkowe opracowania</legend>
+          <div class="opcje dwie">
+            <label class="opcja"><input type="checkbox" name="dodatki" value="wizualizacje" data-kwota="3500" data-nazwa="Wizualizacje 3D"><span class="opcja-tresc"><span class="opcja-nazwa">Wizualizacje 3D — 4 ujęcia</span><span class="opcja-cena">3 500 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="wnetrza" data-za-m2="170" data-nazwa="Projekt wnętrz"><span class="opcja-tresc"><span class="opcja-nazwa">Projekt wnętrz</span><span class="opcja-cena">170 zł/m²</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="ogrod" data-kwota="4500" data-nazwa="Projekt ogrodu"><span class="opcja-tresc"><span class="opcja-nazwa">Projekt ogrodu i małej architektury</span><span class="opcja-cena">4 500 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="energetyka" data-kwota="1200" data-nazwa="Charakterystyka energetyczna"><span class="opcja-tresc"><span class="opcja-nazwa">Świadectwo charakterystyki energetycznej</span><span class="opcja-cena">1 200 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="oze" data-kwota="2500" data-nazwa="Fotowoltaika i pompa ciepła"><span class="opcja-tresc"><span class="opcja-nazwa">Projekt fotowoltaiki i pompy ciepła</span><span class="opcja-cena">2 500 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="nadzor" data-kwota="6500" data-nazwa="Nadzór autorski"><span class="opcja-tresc"><span class="opcja-nazwa">Nadzór autorski przez całą budowę</span><span class="opcja-cena">6 500 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="formalnosci" data-kwota="3000" data-nazwa="Formalności urzędowe"><span class="opcja-tresc"><span class="opcja-nazwa">Załatwienie formalności urzędowych</span><span class="opcja-cena">3 000 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="inwentaryzacja" data-kwota="2800" data-nazwa="Inwentaryzacja budynku"><span class="opcja-tresc"><span class="opcja-nazwa">Inwentaryzacja istniejącego budynku</span><span class="opcja-cena">2 800 zł</span></span></label>
+          </div>
+        </fieldset>
+        <fieldset class="pelna">
+          <legend>Tempo realizacji</legend>
+          <div class="pigulki" role="radiogroup">
+            <label class="pigulka"><input type="radio" name="termin" value="standard" checked><span>Standardowe</span></label>
+            <label class="pigulka"><input type="radio" name="termin" value="szybkie"><span>Przyspieszone (+15%)</span></label>
+            <label class="pigulka"><input type="radio" name="termin" value="ekspres"><span>Ekspresowe (+30%)</span></label>
+          </div>
+        </fieldset>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="krok">
+      <div class="krok-glowa">
+        <span class="krok-nr">05</span>
+        <h2>Kontakt</h2>
+        <p class="krok-opis">Bez tego nie odeślę wyceny — reszta zostaje u Ciebie.</p>
+      </div>
+      <div class="siatka">
+        <div>
+          <label class="etykieta" for="budzet">Budżet na dokumentację projektową</label>
+          <select id="budzet" name="budzet">
+            <option value="nw" selected>Jeszcze nie wiem</option>
+            <option value="15000">Do 15 000 zł</option>
+            <option value="30000">15 000 – 30 000 zł</option>
+            <option value="50000">30 000 – 50 000 zł</option>
+            <option value="80000">50 000 – 80 000 zł</option>
+            <option value="120000">80 000 – 120 000 zł</option>
+            <option value="999999">Powyżej 120 000 zł</option>
+          </select>
+          <p class="podpowiedz">Sam projekt, bez kosztów budowy. Szczera odpowiedź oszczędza czas nam obojgu.</p>
+        </div>
+        <div>
+          <label class="etykieta" for="start">Planowany start budowy</label>
+          <select id="start" name="start">
+            <option value="3">W ciągu 3 miesięcy</option>
+            <option value="6" selected>Za 3–6 miesięcy</option>
+            <option value="12">Za pół roku do roku</option>
+            <option value="24">Później niż za rok</option>
+            <option value="0">Jeszcze nie wiem</option>
+          </select>
+        </div>
+        <div>
+          <label class="etykieta" for="imie">Imię i nazwisko</label>
+          <input type="text" id="imie" name="imie" autocomplete="name" placeholder="Anna Kowalska">
+        </div>
+        <div>
+          <label class="etykieta" for="email">E-mail</label>
+          <input type="email" id="email" name="email" autocomplete="email" placeholder="anna@example.pl">
+        </div>
+        <div>
+          <label class="etykieta" for="telefon">Telefon</label>
+          <input type="tel" id="telefon" name="telefon" autocomplete="tel" placeholder="600 100 200">
+        </div>
+        <div>
+          <label class="etykieta" for="lokalizacja">Miejscowość inwestycji</label>
+          <input type="text" id="lokalizacja" name="lokalizacja" placeholder="np. Konstancin-Jeziorna">
+        </div>
+        <div class="pelna">
+          <label class="etykieta" for="uwagi">Czego kalkulator nie zapytał, a jest ważne?</label>
+          <textarea id="uwagi" name="uwagi" placeholder="Inspiracje, ograniczenia planu miejscowego, wymarzony układ, cokolwiek istotnego."></textarea>
+        </div>
+        <div class="pelna">
+          <label class="opcja"><input type="checkbox" name="zgoda" value="tak"><span class="opcja-tresc"><span class="opcja-nazwa">Zgadzam się na kontakt w sprawie tego zapytania</span><span class="opcja-cena">Dane wykorzystuję wyłącznie do przygotowania oferty.</span></span></label>
+        </div>
+      </div>
+    </section>
+  </form>
+
+  <aside class="panel-kolumna" id="panel-kolumna">
+    <div class="panel">
+      <div class="panel-gora">
+        <span class="panel-etykieta">Wstępna wycena</span>
+        <div class="kwota"><span id="kwota-tekst">—</span><span class="waluta">zł</span></div>
+        <div class="kwota-pod" id="kwota-pod">netto · widełki ±8%</div>
+        <div class="skala"><div class="skala-wypelnienie" id="skala-wypelnienie" style="left:20%;right:40%"></div></div>
+        <div class="skala-podpisy"><span id="skala-min"></span><span id="skala-srodek">—</span><span id="skala-max"></span></div>
+      </div>
+
+      <div class="panel-sekcja">
+        <span class="panel-etykieta">Co składa się na cenę</span>
+        <div class="pozycje" id="pozycje"></div>
+      </div>
+
+      <div class="panel-sekcja">
+        <span class="panel-etykieta">Orientacyjny czas</span>
+        <div class="pozycje">
+          <div class="pozycja"><span class="pozycja-nazwa">Od podpisania umowy do kompletu</span><span class="pozycja-kwota" id="czas">—</span></div>
+        </div>
+      </div>
+
+      <div class="panel-sekcja">
+        <div class="status zolty" id="status">
+          <i class="status-znacznik"></i>
+          <div><b id="status-tytul">Uzupełnij formularz</b><span id="status-opis">Wycena aktualizuje się przy każdej odpowiedzi.</span></div>
+        </div>
+      </div>
+
+      <div class="panel-dol">
+        <a class="przycisk glowny" id="wyslij" href="#">Wyślij zapytanie</a>
+        <button class="przycisk drugi" id="kopiuj" type="button">Kopiuj podsumowanie</button>
+        <p class="panel-nota">Kwoty są orientacyjne i nie stanowią oferty w rozumieniu Kodeksu cywilnego. Wiążącą wycenę przygotowuję po rozmowie i wglądzie w dokumenty działki — zwykle mieści się w podanych widełkach.</p>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<section class="objasnienia">
+  <div class="karta-info">
+    <h3>Co obejmuje cena</h3>
+    <ul>
+      <li>Koncepcja z dwiema turami poprawek</li>
+      <li>Projekt zagospodarowania terenu</li>
+      <li>Projekt architektoniczno-budowlany i techniczny</li>
+      <li>Branże: konstrukcja, instalacje sanitarne i elektryczne</li>
+      <li>Komplet w wersji papierowej i cyfrowej</li>
+    </ul>
+  </div>
+  <div class="karta-info">
+    <h3>Czego nie obejmuje</h3>
+    <ul>
+      <li>Mapy do celów projektowych i badań geotechnicznych</li>
+      <li>Opłat urzędowych i skarbowych</li>
+      <li>Warunków przyłączeniowych od gestorów sieci</li>
+      <li>Kierownika budowy i inspektora nadzoru</li>
+    </ul>
+  </div>
+  <div class="karta-info">
+    <h3>Jak liczę</h3>
+    <p>Podstawą jest stawka za metr kwadratowy powierzchni użytkowej, malejąca wraz z wielkością budynku. Nakładam na nią współczynniki za układ kondygnacji, geometrię dachu, złożoność bryły i warunki działki, a potem dodaję wybrane opracowania. Widełki ±8% to margines na to, czego formularz nie zdąży zapytać.</p>
+  </div>
+</section>
+
+<div class="pasek-mobilny" id="pasek-mobilny">
+  <div><span class="etykieta-m">Wstępna wycena</span><span class="kwota-m" id="kwota-mobilna">—</span></div>
+  <button type="button" id="pokaz-panel">Szczegóły</button>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============================================================
+   KONFIGURACJA — tutaj zmieniasz stawki i dane kontaktowe.
+   Wszystkie kwoty netto w PLN.
+   ============================================================ */
+const KONTAKT = {
+  // ZMIEŃ NA SWÓJ ADRES — na niego trafia zapytanie z przycisku "Wyślij zapytanie".
+  email: "biuro@example.pl",
+  nazwa: "Pracownia projektowa"
+};
+
+// Opcjonalnie: adres webhooka (np. węzeł Webhook w n8n).
+// Pusty ciąg = przycisk otwiera program pocztowy zamiast wysyłać POST.
+const WEBHOOK_URL = "";
+
+const CENNIK = {
+  // Progi marginalne: [do ilu m², stawka za m² w tym przedziale]
+  progi: [[100, 300], [160, 265], [250, 235], [400, 205], [Infinity, 180]],
+  minimum: 22000,          // minimum za pełny komplet; dla węższych zakresów skaluje się mnożnikiem zakresu
+  widelki: 0.08,           // ±8% wokół wyliczonej kwoty
+  zakres: {
+    koncepcja:  { m: 0.28, tygodnie: [3, 5] },
+    budowlany:  { m: 0.68, tygodnie: [8, 12] },
+    komplet:    { m: 1.00, tygodnie: [10, 16] },
+    wykonawczy: { m: 1.28, tygodnie: [14, 20] }
+  },
+  adaptacja: { baza: 4500, piwnica: 900, spadek: 1200, zmiany: 2500, tygodnie: [3, 5] },
+  typ:         { dom: 1.00, blizniak: 1.10, wielorodzinny: 1.28, uslugowy: 1.32, rozbudowa: 1.20, rekreacyjny: 0.90 },
+  kondygnacje: { parter: 0.95, poddasze: 1.00, dwie: 1.08, trzy: 1.18 },
+  piwnica:     { nie: 1.00, czesciowa: 1.07, tak: 1.13 },
+  dach:        { plaski: 1.00, jednospadowy: 0.98, dwuspadowy: 1.00, kopertowy: 1.06, wielospadowy: 1.09, lamany: 1.13 },
+  bryla:       { prosta: 0.95, umiarkowana: 1.00, zlozona: 1.13 },
+  standard:    { podstawowy: 0.92, podwyzszony: 1.00, premium: 1.16 },
+  termin:      { standard: 1.00, szybkie: 1.15, ekspres: 1.30 },
+  garaz:       { brak: 0, wbryle: 1500, wolnostojacy: 4000, wiata: 1500 },
+  odleglosc:   { blisko: 0, srednio: 1500, daleko: 3500, zagranica: 5000 },
+  pokojeOdM:   5,          // pokoje ponad tę liczbę podbijają cenę
+  pokojeStawka: 0.015,     // +1,5% za każdy dodatkowy pokój
+  pokojeMax:   0.09,       // maksymalnie +9%
+  lazienkiOdM: 2,
+  lazienkiStawka: 0.02,
+  lazienkiMax: 0.06,
+  dzialkaProgi: [[800, 0], [2000, 800], [5000, 1800], [Infinity, 3000]],
+  skala: { min: 15000, max: 250000 }   // zakres paska w panelu
+};
+
+const ETYKIETY = {
+  bryla:  { prosta: "Bryła prosta i zwarta", umiarkowana: "Bryła umiarkowana", zlozona: "Bryła złożona — wykusze, przeszklenia" },
+  termin: { standard: "Tryb standardowy", szybkie: "Tryb przyspieszony", ekspres: "Tryb ekspresowy" }
+};
+
+const OPISY_ZAKRESU = {
+  komplet: "Najczęściej wybierany wariant — dokumentacja gotowa do złożenia w urzędzie i do wyceny przez wykonawcę.",
+  budowlany: "Wystarczy do uzyskania pozwolenia na budowę. Projekt techniczny można domówić później.",
+  koncepcja: "Rzuty, bryła i zagospodarowanie działki. Dobry start, jeśli chcesz najpierw sprawdzić pomysł.",
+  wykonawczy: "Pełna dokumentacja z detalami i zestawieniami — mniej pytań i mniej improwizacji na budowie.",
+  adaptacja: "Dostosowanie kupionego projektu katalogowego do Twojej działki i warunków zabudowy."
+};
+
+/* ============================================================
+   LOGIKA
+   ============================================================ */
+const form = document.getElementById("formularz");
+const zl = new Intl.NumberFormat("pl-PL", { maximumFractionDigits: 0 });
+
+const zaokr = (n, do_ = 500) => Math.round(n / do_) * do_;
+const liczba = (n) => zl.format(Math.round(n));
+
+function pobierz(nazwa) {
+  const el = form.elements[nazwa];
+  if (!el) return { v: "", t: "" };
+  if (typeof el.length === "number" && !el.tagName) {           // grupa radio
+    const zazn = [...el].find((x) => x.checked);
+    return { v: el.value, t: zazn ? zazn.nextElementSibling.textContent.trim() : "" };
+  }
+  if (el.tagName === "SELECT") return { v: el.value, t: el.selectedOptions[0].textContent.trim() };
+  return { v: el.value, t: el.value };
+}
+
+function bazaZaMetraz(m2) {
+  let suma = 0, poprzedni = 0;
+  for (const [prog, stawka] of CENNIK.progi) {
+    if (m2 <= poprzedni) break;
+    suma += (Math.min(m2, prog) - poprzedni) * stawka;
+    poprzedni = prog;
+  }
+  return suma;
+}
+
+function zProgow(wartosc, progi) {
+  for (const [prog, kwota] of progi) if (wartosc <= prog) return kwota;
+  return progi[progi.length - 1][1];
+}
+
+function stan() {
+  const s = {};
+  ["typ", "zakres", "kondygnacje", "piwnica", "garaz", "dach", "bryla", "standard", "termin",
+   "status", "odleglosc", "budzet", "start", "imie", "email", "telefon", "lokalizacja", "uwagi"]
+    .forEach((n) => (s[n] = pobierz(n)));
+  s.metraz = Math.max(30, Number(form.metraz.value) || 0);
+  s.dzialka = Math.max(0, Number(form.dzialka.value) || 0);
+  s.pokoje = Math.max(1, Number(form.pokoje.value) || 1);
+  s.lazienki = Math.max(1, Number(form.lazienki.value) || 1);
+  s.warunki = [...form.querySelectorAll('input[name="warunki"]:checked')];
+  s.dodatki = [...form.querySelectorAll('input[name="dodatki"]:checked')];
+  s.zgoda = form.zgoda.checked;
+  return s;
+}
+
+function policz(s) {
+  const poz = [];
+  let kwota = 0;
+  const adaptacja = s.zakres.v === "adaptacja";
+
+  if (adaptacja) {
+    kwota = CENNIK.adaptacja.baza;
+    poz.push({ t: "Adaptacja projektu gotowego", k: kwota });
+    if (s.piwnica.v !== "nie") { poz.push({ t: "Piwnica w adaptacji", k: CENNIK.adaptacja.piwnica }); kwota += CENNIK.adaptacja.piwnica; }
+    if (s.warunki.some((w) => w.value === "spadek")) { poz.push({ t: "Spadek terenu", k: CENNIK.adaptacja.spadek }); kwota += CENNIK.adaptacja.spadek; }
+    if (s.bryla.v === "zlozona") { poz.push({ t: "Istotne zmiany w projekcie", k: CENNIK.adaptacja.zmiany }); kwota += CENNIK.adaptacja.zmiany; }
+  } else {
+    const zak = CENNIK.zakres[s.zakres.v];
+    let baza = bazaZaMetraz(s.metraz) * zak.m;
+    poz.push({ t: `Projekt bazowy · ${s.metraz} m²`, k: baza });
+    kwota = baza;
+
+    const nadPokoje = Math.min(CENNIK.pokojeMax, Math.max(0, s.pokoje - CENNIK.pokojeOdM) * CENNIK.pokojeStawka);
+    const nadLazienki = Math.min(CENNIK.lazienkiMax, Math.max(0, s.lazienki - CENNIK.lazienkiOdM) * CENNIK.lazienkiStawka);
+
+    const mnozniki = [
+      [s.typ.t, CENNIK.typ[s.typ.v]],
+      [s.kondygnacje.t, CENNIK.kondygnacje[s.kondygnacje.v]],
+      [s.piwnica.v === "nie" ? null : "Piwnica: " + s.piwnica.t.toLowerCase(), CENNIK.piwnica[s.piwnica.v]],
+      ["Dach " + s.dach.t.toLowerCase(), CENNIK.dach[s.dach.v]],
+      [ETYKIETY.bryla[s.bryla.v], CENNIK.bryla[s.bryla.v]],
+      ["Standard " + s.standard.t.toLowerCase(), CENNIK.standard[s.standard.v]],
+      [nadPokoje ? `Program: ${s.pokoje} pokoi` : null, 1 + nadPokoje],
+      [nadLazienki ? `${s.lazienki} łazienki` : null, 1 + nadLazienki]
+    ];
+    for (const w of s.warunki) {
+      if (w.dataset.mnoznik) mnozniki.push([w.parentElement.querySelector(".opcja-nazwa").textContent.trim(), Number(w.dataset.mnoznik)]);
+    }
+    for (const [nazwa, m] of mnozniki) {
+      const delta = kwota * (m - 1);
+      if (nazwa && Math.abs(delta) >= 1) poz.push({ t: nazwa, k: delta });
+      kwota += delta;
+    }
+    const minimum = CENNIK.minimum * zak.m;   // minimum skaluje się z zakresem opracowania
+    if (kwota < minimum) {
+      poz.push({ t: "Wyrównanie do minimum pracowni", k: minimum - kwota });
+      kwota = minimum;
+    }
+  }
+
+  // dopłaty kwotowe
+  const garaz = CENNIK.garaz[s.garaz.v] || 0;
+  if (garaz && !adaptacja) { poz.push({ t: "Garaż: " + s.garaz.t.toLowerCase(), k: garaz }); kwota += garaz; }
+
+  if (!adaptacja) {
+    const teren = zProgow(s.dzialka, CENNIK.dzialkaProgi);
+    if (teren) { poz.push({ t: `Zagospodarowanie działki ${s.dzialka} m²`, k: teren }); kwota += teren; }
+  }
+
+  for (const w of s.warunki) {
+    if (w.dataset.kwota) {
+      const k = Number(w.dataset.kwota);
+      poz.push({ t: w.parentElement.querySelector(".opcja-nazwa").textContent.trim(), k });
+      kwota += k;
+    }
+  }
+
+  for (const d of s.dodatki) {
+    const k = d.dataset.zaM2 ? Number(d.dataset.zaM2) * s.metraz : Number(d.dataset.kwota || 0);
+    poz.push({ t: d.dataset.nazwa, k });
+    kwota += k;
+  }
+
+  const dojazd = CENNIK.odleglosc[s.odleglosc.v] || 0;
+  if (dojazd) { poz.push({ t: "Dojazdy: " + s.odleglosc.t.toLowerCase(), k: dojazd }); kwota += dojazd; }
+
+  const mTermin = CENNIK.termin[s.termin.v];
+  if (mTermin !== 1) {
+    const delta = kwota * (mTermin - 1);
+    poz.push({ t: ETYKIETY.termin[s.termin.v], k: delta });
+    kwota += delta;
+  }
+
+  const min = zaokr(kwota * (1 - CENNIK.widelki));
+  const max = zaokr(kwota * (1 + CENNIK.widelki));
+
+  // czas realizacji
+  let [tMin, tMax] = adaptacja ? CENNIK.adaptacja.tygodnie : CENNIK.zakres[s.zakres.v].tygodnie;
+  if (!adaptacja && s.metraz > 250) { tMin += 2; tMax += 3; }
+  if (s.dodatki.some((d) => d.value === "wnetrza")) { tMin += 2; tMax += 4; }
+  const skrot = { standard: 1, szybkie: 0.8, ekspres: 0.65 }[s.termin.v];
+  tMin = Math.round(tMin * skrot); tMax = Math.round(tMax * skrot);
+
+  return { poz, kwota, min, max, adaptacja, tMin, tMax, perM2: kwota / s.metraz };
+}
+
+function kwalifikuj(s, w) {
+  let punkty = 0;
+  punkty += { mam: 2, kupuje: 1, szukam: 0 }[s.status.v];
+  punkty += { "3": 2, "6": 2, "12": 1, "24": 0, "0": 0 }[s.start.v];
+
+  let budzet = null;
+  if (s.budzet.v === "nw") punkty += 1;
+  else {
+    budzet = Number(s.budzet.v);
+    if (budzet >= w.min) punkty += 2;
+    else if (budzet >= w.min * 0.8) punkty += 1;
+  }
+
+  if (budzet !== null && budzet < w.min * 0.6) {
+    return {
+      klasa: "czerwony", ocena: "C",
+      tytul: "Warto zawęzić zakres",
+      opis: "Przy tym budżecie sensowniejszym startem będzie adaptacja projektu gotowego albo sama koncepcja. Napisz — podpowiem, co da się zrobić w tych ramach."
+    };
+  }
+  if (punkty >= 5) {
+    return {
+      klasa: "zielony", ocena: "A",
+      tytul: "Wygląda na dobrze dopasowane",
+      opis: "Skala, budżet i termin się spinają. Wyślij zapytanie — odezwę się z propozycją rozmowy i terminami."
+    };
+  }
+  if (punkty >= 3) {
+    return {
+      klasa: "zolty", ocena: "B",
+      tytul: "Kilka rzeczy do doprecyzowania",
+      opis: "Wycena jest realna, ale zależy od paru szczegółów — dopiszę je po rozmowie. Wyślij zapytanie, wrócę z pytaniami."
+    };
+  }
+  return {
+    klasa: "zolty", ocena: "B",
+    tytul: "Jeszcze wcześnie na projekt",
+    opis: "Bez działki i terminu wycena zostaje orientacyjna. Zapisz ją sobie i wróć, gdy plany się skonkretyzują — albo napisz, pomogę ocenić działkę przed zakupem."
+  };
+}
+
+function podsumowanie(s, w, k) {
+  const L = [];
+  L.push("ZAPYTANIE O WYCENĘ PROJEKTU");
+  L.push("");
+  L.push(`Wstępna wycena: ${liczba(w.min)} – ${liczba(w.max)} zł netto`);
+  if (!w.adaptacja) L.push(`Stawka: ok. ${liczba(w.perM2)} zł/m²`);
+  L.push(`Czas realizacji: ${w.tMin}–${w.tMax} tygodni`);
+  L.push(`Kwalifikacja wstępna: ${k.ocena} — ${k.tytul}`);
+  L.push("");
+  L.push("INWESTYCJA");
+  L.push(`- Typ: ${s.typ.t}`);
+  L.push(`- Zakres: ${s.zakres.t}`);
+  if (!w.adaptacja) {
+    L.push(`- Powierzchnia użytkowa: ${s.metraz} m²`);
+    L.push(`- Kondygnacje: ${s.kondygnacje.t}`);
+    L.push(`- Piwnica: ${s.piwnica.t}`);
+    L.push(`- Garaż: ${s.garaz.t}`);
+    L.push(`- Dach: ${s.dach.t}`);
+    L.push(`- Pokoje / łazienki: ${s.pokoje} / ${s.lazienki}`);
+    L.push(`- Bryła: ${s.bryla.t}`);
+    L.push(`- Standard: ${s.standard.t}`);
+  }
+  L.push("");
+  L.push("DZIAŁKA");
+  L.push(`- Powierzchnia: ${s.dzialka} m²`);
+  L.push(`- Status: ${s.status.t}`);
+  L.push(`- Lokalizacja: ${s.lokalizacja.v || "nie podano"} (${s.odleglosc.t})`);
+  L.push(`- Warunki: ${s.warunki.length ? s.warunki.map((x) => x.parentElement.querySelector(".opcja-nazwa").textContent.trim()).join(", ") : "brak zaznaczonych"}`);
+  L.push("");
+  L.push("DODATKI");
+  L.push(s.dodatki.length ? s.dodatki.map((d) => "- " + d.dataset.nazwa).join("\n") : "- brak");
+  L.push(`- Tempo: ${s.termin.t}`);
+  L.push("");
+  L.push("KLIENT");
+  L.push(`- ${s.imie.v || "nie podano"}`);
+  L.push(`- E-mail: ${s.email.v || "nie podano"}`);
+  L.push(`- Telefon: ${s.telefon.v || "nie podano"}`);
+  L.push(`- Budżet na projekt: ${s.budzet.t}`);
+  L.push(`- Start budowy: ${s.start.t}`);
+  if (s.uwagi.v) { L.push(""); L.push("UWAGI"); L.push(s.uwagi.v); }
+  L.push("");
+  L.push("ROZBICIE WYCENY");
+  w.poz.forEach((p) => L.push(`- ${p.t}: ${p.k >= 0 ? "+" : "−"}${liczba(Math.abs(p.k))} zł`));
+  return L.join("\n");
+}
+
+let ostatnie = null;
+
+function odswiez() {
+  const s = stan();
+  const w = policz(s);
+  const k = kwalifikuj(s, w);
+  ostatnie = { s, w, k };
+
+  document.getElementById("kwota-tekst").textContent = `${liczba(w.min)} – ${liczba(w.max)}`;
+  document.getElementById("kwota-mobilna").textContent = `${liczba(w.min)} – ${liczba(w.max)} zł`;
+  document.getElementById("kwota-pod").textContent = w.adaptacja
+    ? "netto · adaptacja projektu gotowego"
+    : `netto · ok. ${liczba(w.perM2)} zł za m² powierzchni użytkowej`;
+
+  const { min: sMin, max: sMax } = CENNIK.skala;
+  const proc = (v) => Math.min(100, Math.max(0, ((v - sMin) / (sMax - sMin)) * 100));
+  const pasek = document.getElementById("skala-wypelnienie");
+  pasek.style.left = proc(w.min) + "%";
+  pasek.style.right = 100 - proc(w.max) + "%";
+  document.getElementById("skala-srodek").textContent = liczba(w.kwota) + " zł";
+
+  document.getElementById("pozycje").innerHTML =
+    w.poz.map((p) => `<div class="pozycja"><span class="pozycja-nazwa">${p.t}</span><span class="pozycja-kwota">${p.k >= 0 ? "" : "−"}${liczba(Math.abs(p.k))}</span></div>`).join("") +
+    `<div class="pozycja suma"><span class="pozycja-nazwa">Razem (środek widełek)</span><span class="pozycja-kwota">${liczba(w.kwota)} zł</span></div>`;
+
+  document.getElementById("czas").textContent = `${w.tMin}–${w.tMax} tygodni`;
+
+  const status = document.getElementById("status");
+  status.className = "status " + k.klasa;
+  document.getElementById("status-tytul").textContent = k.tytul;
+  document.getElementById("status-opis").textContent = k.opis;
+
+  document.getElementById("zakres-podpowiedz").textContent = OPISY_ZAKRESU[s.zakres.v];
+}
+
+function pokazToast(tekst) {
+  const t = document.getElementById("toast");
+  t.textContent = tekst;
+  t.classList.add("widoczny");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove("widoczny"), 2600);
+}
+
+/* --- synchronizacja suwaka z polem metrażu --- */
+const suwak = document.getElementById("metraz-suwak");
+const poleMetraz = document.getElementById("metraz");
+suwak.addEventListener("input", () => { poleMetraz.value = suwak.value; odswiez(); });
+poleMetraz.addEventListener("input", () => {
+  const v = Number(poleMetraz.value);
+  if (v >= Number(suwak.min) && v <= Number(suwak.max)) suwak.value = v;
+  odswiez();
+});
+
+form.addEventListener("input", odswiez);
+form.addEventListener("change", odswiez);
+
+/* --- wysyłka --- */
+document.getElementById("wyslij").addEventListener("click", async (e) => {
+  e.preventDefault();
+  const { s, w, k } = ostatnie;
+  if (!s.email.v || !s.imie.v) { pokazToast("Podaj imię i e-mail — bez tego nie odeślę wyceny."); form.imie.focus(); return; }
+  if (!s.zgoda) { pokazToast("Zaznacz zgodę na kontakt."); return; }
+
+  const tresc = podsumowanie(s, w, k);
+
+  if (WEBHOOK_URL) {
+    try {
+      const odp = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          klient: { imie: s.imie.v, email: s.email.v, telefon: s.telefon.v, lokalizacja: s.lokalizacja.v },
+          wycena: { min: w.min, max: w.max, srodek: Math.round(w.kwota), zaM2: Math.round(w.perM2), tygodnie: [w.tMin, w.tMax] },
+          kwalifikacja: k.ocena,
+          budynek: { typ: s.typ.v, zakres: s.zakres.v, metraz: s.metraz, kondygnacje: s.kondygnacje.v, piwnica: s.piwnica.v, garaz: s.garaz.v, dach: s.dach.v, pokoje: s.pokoje, lazienki: s.lazienki, bryla: s.bryla.v, standard: s.standard.v },
+          dzialka: { powierzchnia: s.dzialka, status: s.status.v, odleglosc: s.odleglosc.v, warunki: s.warunki.map((x) => x.value) },
+          dodatki: s.dodatki.map((d) => d.value),
+          termin: s.termin.v,
+          budzet: s.budzet.v,
+          startBudowy: s.start.v,
+          uwagi: s.uwagi.v,
+          podsumowanie: tresc
+        })
+      });
+      if (!odp.ok) throw new Error(odp.status);
+      pokazToast("Zapytanie wysłane. Odezwę się w ciągu 2 dni roboczych.");
+      return;
+    } catch (err) {
+      pokazToast("Wysyłka nie doszła — otwieram program pocztowy.");
+    }
+  }
+
+  const temat = `Zapytanie o wycenę — ${s.typ.t}, ${s.metraz} m² (${s.imie.v})`;
+  window.location.href = `mailto:${KONTAKT.email}?subject=${encodeURIComponent(temat)}&body=${encodeURIComponent(tresc)}`;
+});
+
+document.getElementById("kopiuj").addEventListener("click", async () => {
+  const { s, w, k } = ostatnie;
+  const tresc = podsumowanie(s, w, k);
+  try {
+    await navigator.clipboard.writeText(tresc);
+    pokazToast("Podsumowanie skopiowane do schowka.");
+  } catch (err) {
+    const ta = document.createElement("textarea");
+    ta.value = tresc; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); pokazToast("Podsumowanie skopiowane do schowka."); }
+    catch (e2) { pokazToast("Nie udało się skopiować — zaznacz tekst ręcznie."); }
+    ta.remove();
+  }
+});
+
+document.getElementById("pokaz-panel").addEventListener("click", () => {
+  document.getElementById("panel-kolumna").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+document.getElementById("skala-min").textContent = liczba(CENNIK.skala.min / 1000) + " tys.";
+document.getElementById("skala-max").textContent = liczba(CENNIK.skala.max / 1000) + " tys.";
+
+odswiez();
+</script>
+</body>
+</html>
