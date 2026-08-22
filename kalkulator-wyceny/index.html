@@ -468,6 +468,14 @@ input[type="range"]{flex:1;accent-color:var(--akcent);min-width:0}
           </div>
         </div>
         <div>
+          <label class="etykieta" for="rynek">Lokalizacja inwestycji</label>
+          <select id="rynek" name="rynek">
+            <option value="duze">Duże miasto (Warszawa, Kraków, Trójmiasto, Wrocław, Poznań)</option>
+            <option value="srednie" selected>Średnie miasto lub jego okolice</option>
+            <option value="male">Mniejsza miejscowość lub wieś</option>
+          </select>
+        </div>
+        <div>
           <label class="etykieta" for="odleglosc">Odległość od pracowni</label>
           <select id="odleglosc" name="odleglosc">
             <option value="blisko" selected>Do 50 km</option>
@@ -491,8 +499,8 @@ input[type="range"]{flex:1;accent-color:var(--akcent);min-width:0}
             <label class="opcja"><input type="checkbox" name="warunki" value="konserwator" data-mnoznik="1.10"><span class="opcja-tresc"><span class="opcja-nazwa">Strefa ochrony konserwatorskiej</span><span class="opcja-cena">+10% — dodatkowe uzgodnienia</span></span></label>
             <label class="opcja"><input type="checkbox" name="warunki" value="wody" data-mnoznik="1.04"><span class="opcja-tresc"><span class="opcja-nazwa">Wysoki poziom wód gruntowych</span><span class="opcja-cena">+4%</span></span></label>
             <label class="opcja"><input type="checkbox" name="warunki" value="ksztalt" data-mnoznik="1.05"><span class="opcja-tresc"><span class="opcja-nazwa">Działka wąska lub o nietypowym kształcie</span><span class="opcja-cena">+5%</span></span></label>
-            <label class="opcja"><input type="checkbox" name="warunki" value="wz" data-kwota="2500"><span class="opcja-tresc"><span class="opcja-nazwa">Brak planu miejscowego — potrzebne warunki zabudowy</span><span class="opcja-cena">+2 500 zł</span></span></label>
-            <label class="opcja"><input type="checkbox" name="warunki" value="media" data-kwota="1800"><span class="opcja-tresc"><span class="opcja-nazwa">Brak przyłączy — do zaprojektowania</span><span class="opcja-cena">+1 800 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="warunki" value="wz" data-kwota="1200"><span class="opcja-tresc"><span class="opcja-nazwa">Brak planu miejscowego — potrzebne warunki zabudowy</span><span class="opcja-cena">+1 200 zł za wniosek o WZ</span></span></label>
+            <label class="opcja"><input type="checkbox" name="warunki" value="media" data-kwota="1500"><span class="opcja-tresc"><span class="opcja-nazwa">Brak przyłączy — do zaprojektowania</span><span class="opcja-cena">+1 500 zł</span></span></label>
           </div>
         </fieldset>
       </div>
@@ -509,14 +517,14 @@ input[type="range"]{flex:1;accent-color:var(--akcent);min-width:0}
         <fieldset class="pelna">
           <legend>Dodatkowe opracowania</legend>
           <div class="opcje dwie">
-            <label class="opcja"><input type="checkbox" name="dodatki" value="wizualizacje" data-kwota="3500" data-nazwa="Wizualizacje 3D"><span class="opcja-tresc"><span class="opcja-nazwa">Wizualizacje 3D — 4 ujęcia</span><span class="opcja-cena">3 500 zł</span></span></label>
-            <label class="opcja"><input type="checkbox" name="dodatki" value="wnetrza" data-za-m2="170" data-nazwa="Projekt wnętrz"><span class="opcja-tresc"><span class="opcja-nazwa">Projekt wnętrz</span><span class="opcja-cena">170 zł/m²</span></span></label>
-            <label class="opcja"><input type="checkbox" name="dodatki" value="ogrod" data-kwota="4500" data-nazwa="Projekt ogrodu"><span class="opcja-tresc"><span class="opcja-nazwa">Projekt ogrodu i małej architektury</span><span class="opcja-cena">4 500 zł</span></span></label>
-            <label class="opcja"><input type="checkbox" name="dodatki" value="energetyka" data-kwota="1200" data-nazwa="Charakterystyka energetyczna"><span class="opcja-tresc"><span class="opcja-nazwa">Świadectwo charakterystyki energetycznej</span><span class="opcja-cena">1 200 zł</span></span></label>
-            <label class="opcja"><input type="checkbox" name="dodatki" value="oze" data-kwota="2500" data-nazwa="Fotowoltaika i pompa ciepła"><span class="opcja-tresc"><span class="opcja-nazwa">Projekt fotowoltaiki i pompy ciepła</span><span class="opcja-cena">2 500 zł</span></span></label>
-            <label class="opcja"><input type="checkbox" name="dodatki" value="nadzor" data-kwota="6500" data-nazwa="Nadzór autorski"><span class="opcja-tresc"><span class="opcja-nazwa">Nadzór autorski przez całą budowę</span><span class="opcja-cena">6 500 zł</span></span></label>
-            <label class="opcja"><input type="checkbox" name="dodatki" value="formalnosci" data-kwota="3000" data-nazwa="Formalności urzędowe"><span class="opcja-tresc"><span class="opcja-nazwa">Załatwienie formalności urzędowych</span><span class="opcja-cena">3 000 zł</span></span></label>
-            <label class="opcja"><input type="checkbox" name="dodatki" value="inwentaryzacja" data-kwota="2800" data-nazwa="Inwentaryzacja budynku"><span class="opcja-tresc"><span class="opcja-nazwa">Inwentaryzacja istniejącego budynku</span><span class="opcja-cena">2 800 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="wizualizacje" data-kwota="2600" data-nazwa="Wizualizacje 3D"><span class="opcja-tresc"><span class="opcja-nazwa">Wizualizacje 3D — 4 ujęcia</span><span class="opcja-cena">2 600 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="wnetrza" data-za-m2="200" data-nazwa="Projekt wnętrz"><span class="opcja-tresc"><span class="opcja-nazwa">Projekt wnętrz</span><span class="opcja-cena">200 zł/m²</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="ogrod" data-kwota="3500" data-nazwa="Projekt ogrodu"><span class="opcja-tresc"><span class="opcja-nazwa">Projekt ogrodu i małej architektury</span><span class="opcja-cena">3 500 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="energetyka" data-kwota="450" data-nazwa="Charakterystyka energetyczna"><span class="opcja-tresc"><span class="opcja-nazwa">Świadectwo charakterystyki energetycznej</span><span class="opcja-cena">450 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="oze" data-kwota="3000" data-nazwa="Fotowoltaika i pompa ciepła"><span class="opcja-tresc"><span class="opcja-nazwa">Projekt fotowoltaiki i pompy ciepła</span><span class="opcja-cena">3 000 zł</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="nadzor" data-kwota="4500" data-nazwa="Nadzór autorski"><span class="opcja-tresc"><span class="opcja-nazwa">Nadzór autorski przez całą budowę</span><span class="opcja-cena">4 500 zł · ok. 10 wizyt</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="formalnosci" data-kwota="2000" data-nazwa="Formalności urzędowe"><span class="opcja-tresc"><span class="opcja-nazwa">Załatwienie formalności urzędowych</span><span class="opcja-cena">2 000 zł · bez opłat skarbowych</span></span></label>
+            <label class="opcja"><input type="checkbox" name="dodatki" value="inwentaryzacja" data-kwota="2200" data-za-m2="16" data-nazwa="Inwentaryzacja i ekspertyza budynku"><span class="opcja-tresc"><span class="opcja-nazwa">Inwentaryzacja i ekspertyza istniejącego budynku</span><span class="opcja-cena">2 200 zł + 16 zł/m²</span></span></label>
           </div>
         </fieldset>
         <fieldset class="pelna">
@@ -648,7 +656,7 @@ input[type="range"]{flex:1;accent-color:var(--akcent);min-width:0}
   </div>
   <div class="karta-info">
     <h3>Jak liczę</h3>
-    <p>Podstawą jest stawka za metr kwadratowy powierzchni użytkowej, malejąca wraz z wielkością budynku. Nakładam na nią współczynniki za układ kondygnacji, geometrię dachu, złożoność bryły i warunki działki, a potem dodaję wybrane opracowania. Widełki ±8% to margines na to, czego formularz nie zdąży zapytać.</p>
+    <p>Podstawą jest stawka za metr kwadratowy powierzchni użytkowej, malejąca wraz z wielkością budynku — kalibrowana na stawkach rynkowych z 2026 roku (150–300 zł/m², w największych miastach więcej). Nakładam na nią współczynniki za układ kondygnacji, geometrię dachu, złożoność bryły i warunki działki, a potem dodaję wybrane opracowania. Widełki ±10% to margines na to, czego formularz nie zdąży zapytać.</p>
   </div>
 </section>
 
@@ -675,24 +683,34 @@ const KONTAKT = {
 const WEBHOOK_URL = "";
 
 const CENNIK = {
-  // Progi marginalne: [do ilu m², stawka za m² w tym przedziale]
-  progi: [[100, 300], [160, 265], [250, 235], [400, 205], [Infinity, 180]],
-  minimum: 22000,          // minimum za pełny komplet; dla węższych zakresów skaluje się mnożnikiem zakresu
-  widelki: 0.08,           // ±8% wokół wyliczonej kwoty
+  // Progi marginalne: [do ilu m², stawka za m² w tym przedziale].
+  // Kalibracja: rynek 2026 podaje 150–300 zł/m² dla projektu indywidualnego
+  // (250–350 zł/m² w Warszawie/Krakowie/Trójmieście), a łączne widełki
+  // 15–25 tys. zł do 120 m², 22–35 tys. zł dla 120–180 m², 30–50 tys. zł powyżej 180 m².
+  progi: [[100, 190], [160, 165], [250, 145], [400, 130], [Infinity, 115]],
+  minimum: 16000,          // minimum za pełny komplet; skaluje się mnożnikiem zakresu i typu obiektu
+  minimumTypu: { rozbudowa: 0.55 },   // rozbudowy do 30 m² to na rynku ryczałt 8–12 tys. zł
+  widelki: 0.10,           // ±10% wokół wyliczonej kwoty — rozrzut rynkowy jest szeroki
   zakres: {
-    koncepcja:  { m: 0.28, tygodnie: [3, 5] },
-    budowlany:  { m: 0.68, tygodnie: [8, 12] },
+    koncepcja:  { m: 0.32, tygodnie: [3, 5] },    // ok. 58 zł/m² przy 160 m²; rynek: 50–90 zł/m²
+    budowlany:  { m: 0.65, tygodnie: [8, 12] },
     komplet:    { m: 1.00, tygodnie: [10, 16] },
-    wykonawczy: { m: 1.28, tygodnie: [14, 20] }
+    wykonawczy: { m: 1.30, tygodnie: [14, 20] }   // rynek: PW to 20–95% ceny PB
   },
-  adaptacja: { baza: 4500, piwnica: 900, spadek: 1200, zmiany: 2500, tygodnie: [3, 5] },
-  typ:         { dom: 1.00, blizniak: 1.10, wielorodzinny: 1.28, uslugowy: 1.32, rozbudowa: 1.20, rekreacyjny: 0.90 },
-  kondygnacje: { parter: 0.95, poddasze: 1.00, dwie: 1.08, trzy: 1.18 },
-  piwnica:     { nie: 1.00, czesciowa: 1.07, tak: 1.13 },
-  dach:        { plaski: 1.00, jednospadowy: 0.98, dwuspadowy: 1.00, kopertowy: 1.06, wielospadowy: 1.09, lamany: 1.13 },
-  bryla:       { prosta: 0.95, umiarkowana: 1.00, zlozona: 1.13 },
-  standard:    { podstawowy: 0.92, podwyzszony: 1.00, premium: 1.16 },
+  // Adaptacja projektu gotowego: rynek 2026 to 2,5–10 tys. zł, średnio ok. 5,2 tys. zł
+  adaptacja: { baza: 4200, piwnica: 900, spadek: 1200, zmiany: 2500, tygodnie: [3, 5] },
+  typ:         { dom: 1.00, blizniak: 1.10, wielorodzinny: 1.25, uslugowy: 1.30, rozbudowa: 1.20, rekreacyjny: 0.85 },
+  // Poniższe mnożniki to konwencja pracowni, nie dane z cenników — rynek potwierdza
+  // tylko kierunek („piwnica, wielospadowy dach i złożona bryła podnoszą cenę").
+  kondygnacje: { parter: 0.95, poddasze: 1.00, dwie: 1.08, trzy: 1.16 },
+  piwnica:     { nie: 1.00, czesciowa: 1.06, tak: 1.12 },
+  dach:        { plaski: 1.00, jednospadowy: 0.98, dwuspadowy: 1.00, kopertowy: 1.05, wielospadowy: 1.08, lamany: 1.12 },
+  bryla:       { prosta: 0.95, umiarkowana: 1.00, zlozona: 1.12 },
+  standard:    { podstawowy: 0.92, podwyzszony: 1.00, premium: 1.15 },
   termin:      { standard: 1.00, szybkie: 1.15, ekspres: 1.30 },
+  // Rynek 2026: duże miasta 250–350 zł/m², reszta kraju 150–300 zł/m².
+  // Jeśli wyceniasz jednakowo niezależnie od lokalizacji — ustaw wszystko na 1.
+  rynek:       { duze: 1.15, srednie: 1.00, male: 0.92 },
   garaz:       { brak: 0, wbryle: 1500, wolnostojacy: 4000, wiata: 1500 },
   odleglosc:   { blisko: 0, srednio: 1500, daleko: 3500, zagranica: 5000 },
   pokojeOdM:   5,          // pokoje ponad tę liczbę podbijają cenę
@@ -702,7 +720,7 @@ const CENNIK = {
   lazienkiStawka: 0.02,
   lazienkiMax: 0.06,
   dzialkaProgi: [[800, 0], [2000, 800], [5000, 1800], [Infinity, 3000]],
-  skala: { min: 15000, max: 250000 }   // zakres paska w panelu
+  skala: { min: 10000, max: 200000 }   // zakres paska w panelu
 };
 
 const ETYKIETY = {
@@ -756,7 +774,7 @@ function zProgow(wartosc, progi) {
 function stan() {
   const s = {};
   ["typ", "zakres", "kondygnacje", "piwnica", "garaz", "dach", "bryla", "standard", "termin",
-   "status", "odleglosc", "budzet", "start", "imie", "email", "telefon", "lokalizacja", "uwagi"]
+   "status", "odleglosc", "rynek", "budzet", "start", "imie", "email", "telefon", "lokalizacja", "uwagi"]
     .forEach((n) => (s[n] = pobierz(n)));
   s.metraz = Math.max(30, Number(form.metraz.value) || 0);
   s.dzialka = Math.max(0, Number(form.dzialka.value) || 0);
@@ -790,6 +808,7 @@ function policz(s) {
 
     const mnozniki = [
       [s.typ.t, CENNIK.typ[s.typ.v]],
+      [s.rynek.v === "srednie" ? null : "Lokalizacja: " + s.rynek.t.split(" (")[0].toLowerCase(), CENNIK.rynek[s.rynek.v]],
       [s.kondygnacje.t, CENNIK.kondygnacje[s.kondygnacje.v]],
       [s.piwnica.v === "nie" ? null : "Piwnica: " + s.piwnica.t.toLowerCase(), CENNIK.piwnica[s.piwnica.v]],
       ["Dach " + s.dach.t.toLowerCase(), CENNIK.dach[s.dach.v]],
@@ -806,7 +825,7 @@ function policz(s) {
       if (nazwa && Math.abs(delta) >= 1) poz.push({ t: nazwa, k: delta });
       kwota += delta;
     }
-    const minimum = CENNIK.minimum * zak.m;   // minimum skaluje się z zakresem opracowania
+    const minimum = CENNIK.minimum * zak.m * (CENNIK.minimumTypu[s.typ.v] || 1);
     if (kwota < minimum) {
       poz.push({ t: "Wyrównanie do minimum pracowni", k: minimum - kwota });
       kwota = minimum;
@@ -831,7 +850,7 @@ function policz(s) {
   }
 
   for (const d of s.dodatki) {
-    const k = d.dataset.zaM2 ? Number(d.dataset.zaM2) * s.metraz : Number(d.dataset.kwota || 0);
+    const k = Number(d.dataset.kwota || 0) + Number(d.dataset.zaM2 || 0) * s.metraz;
     poz.push({ t: d.dataset.nazwa, k });
     kwota += k;
   }
