@@ -1,0 +1,14 @@
+services:
+  pai:
+    build: .
+    container_name: pai-assistant
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+      # Mount Obsidian vault (uncomment and adjust path)
+      # - /path/to/obsidian/vault:/obsidian:ro
+    environment:
+      - DATABASE_PATH=data/assistant.db

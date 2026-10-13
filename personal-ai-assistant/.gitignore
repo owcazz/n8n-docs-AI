@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.env
+data/*.db
+config/gmail_token.json
+config/gmail_credentials.json
+.venv/
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
