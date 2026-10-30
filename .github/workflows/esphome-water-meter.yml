@@ -1,0 +1,45 @@
+# Sprawdza konfigurację ESPHome licznika wody: walidacja + pełna kompilacja.
+name: ESPHome - licznik wody
+
+on:
+  push:
+    paths:
+      - "ha-water-meter/**"
+      - ".github/workflows/esphome-water-meter.yml"
+  workflow_dispatch:
+
+jobs:
+  esphome:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: ha-water-meter
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ESPHome
+        run: pip install esphome
+
+      - name: ESPHome version
+        run: esphome version
+
+      - name: Create test secrets.yaml
+        run: |
+          cat > secrets.yaml <<EOT
+          wifi_ssid: "test-ssid"
+          wifi_password: "test-password"
+          ap_password: "test-ap-pass"
+          api_key: "$(openssl rand -base64 32)"
+          ota_password: "test-ota-pass"
+          EOT
+
+      - name: Validate configuration
+        run: esphome config licznik-wody.yaml
+
+      - name: Compile firmware
+        run: esphome compile licznik-wody.yaml

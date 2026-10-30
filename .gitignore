@@ -21,3 +21,6 @@ __pycache__/
 
 output.csv
 _doctools/*.csv
+
+# ESPHome - lokalne hasła
+ha-water-meter/secrets.yaml
