@@ -110,7 +110,6 @@ Masz już dodatek ESPHome Device Builder, więc:
    wifi_password: "HasloWiFi"
    ap_password: "HasloAwaryjne12"
    api_key: "WKLEJ_WYGENEROWANY_KLUCZ"
-   ota_password: "HasloDoAktualizacji"
    ```
 
    `api_key` wygeneruj tak: **+ New device → Continue → nazwa dowolna → Skip** — ESPHome pokaże
@@ -294,8 +293,7 @@ api:
     key: !secret api_key
 
 ota:
-  - platform: esphome
-    password: !secret ota_password
+  - platform: esphome   # bez hasła - aktualizacje chroni szyfrowanie API (zalecenie ESPHome)
 
 wifi:
   ssid: !secret wifi_ssid

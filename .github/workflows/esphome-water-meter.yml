@@ -35,7 +35,6 @@ jobs:
           wifi_password: "test-password"
           ap_password: "test-ap-pass"
           api_key: "$(openssl rand -base64 32)"
-          ota_password: "test-ota-pass"
           EOT
 
       - name: Validate configuration
