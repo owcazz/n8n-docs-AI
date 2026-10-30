@@ -59,6 +59,12 @@ Przykład z testów wmbusmeters dla tej samej nakładki: ID `21242472`, a liczni
 - **alarmy**: wyciek, przepływ wsteczny, ingerencja (fraud) — można podpiąć powiadomienie na telefon,
 - żywotność baterii nakładki, siła sygnału.
 
+## Gdzie postawić ESP32 (licznik w łazience)
+- **Nie w łazience** — wilgoć i para szkodzą elektronice. Wystarczy pokój obok lub korytarz, przy gniazdku USB.
+- Sygnał 868 MHz przechodzi przez 1–2 ściany bez problemu. Po uruchomieniu sprawdź encję
+  „Woda - sygnał radiowy”: **powyżej -90 dBm** jest dobrze, poniżej -95 dBm przysuń ESP32 bliżej.
+- Antenę CC1101 ustaw **pionowo**, z dala od metalowych rur i lustra.
+
 ## Uwagi
 - Odczyt przychodzi tylko wtedy, gdy nakładka nadaje — to nie jest przepływomierz w czasie rzeczywistym.
 - Sterownik `izar` w wmbusmeters ma następcę `izarv2`; komponent ESPHome na dziś (29.10.2026) zawiera tylko `izar` — to nie przeszkadza.
