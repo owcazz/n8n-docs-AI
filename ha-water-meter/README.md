@@ -80,6 +80,22 @@ Opisy pinów na ESP32 są nadrukowane obok każdego pinu („D18”, „D23”, 
 
 Przed podaniem zasilania sprawdź dwa razy: **VCC → 3V3** i **GND → GND**.
 
+### Lutowanie — czy w ogóle trzeba?
+
+- **ESP32 DevKit** zwykle przychodzi z **wlutowanymi** listwami pinów. Jeśli listwy są luzem w torebce,
+  trzeba je wlutować: listwę wsadź w płytkę stykową (breadboard), nałóż ESP32, lutuj po kolei
+  każdy pin (lutownica 300–350 °C, cyna z topnikiem, 1–2 s na pin).
+- **CC1101** ma zwykle **wlutowany** grzebień 2×4 piny o rastrze **2 mm**. Przewody dupont (2,54 mm)
+  wchodzą na nie, ale luźno. Dwa sposoby na pewne połączenie:
+  1. **Bez lutowania** — nałóż dupont F-F i zabezpiecz kroplą kleju na gorąco lub taśmą; do testów wystarczy.
+  2. **Z lutowaniem (docelowo)** — odlutuj grzebień albo kup CC1101 bez pinów i przylutuj
+     **7 przewodów bezpośrednio do padów** (VCC, GND, SCK, MOSI, MISO, CSN, GDO0), drugi koniec
+     do pinów ESP32. To najpewniejsze połączenie i polecam je na stałe.
+- Jeżeli CC1101 ma złącze antenowe **IPEX/U.FL**, nic nie lutujesz — antena wpina się na wcisk
+  (przez przejściówkę IPEX→SMA). Jeśli ma tylko pady pod antenę bez złącza, przylutuj do pada ANT
+  kawałek sztywnego drutu o długości **8,2 cm** (ćwierć fali 868 MHz) — to działa zaskakująco dobrze.
+- **Nigdy nie lutuj przy podłączonym zasilaniu.** Po lutowaniu sprawdź multimetrem, że VCC i GND nie są zwarte.
+
 ---
 
 ## 4. Przygotowanie ESPHome (w Home Assistant)
