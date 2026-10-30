@@ -427,7 +427,7 @@ binary_sensor:
 
 | Objaw | Co sprawdzić |
 |---|---|
-| `Validate` zgłasza błąd | wyślij mi treść błędu — konfiguracja była sprawdzana ze źródłem komponentu (stan z 29.10.2026), ale nie była kompilowana w tym środowisku |
+| `Validate` zgłasza błąd | konfiguracja przeszła walidację i pełną kompilację w GitHub Actions (30.10.2026, ESP-IDF 5.5.6). Jeśli u Ciebie wyskoczy błąd, to prawie na pewno nowsza wersja ESPHome/komponentu — wyślij mi treść błędu |
 | Kompilacja pada z braku pamięci / miejsca | ESPHome na słabym RPi może potrzebować 15–30 min; nie przerywaj. Ewentualnie skompiluj na komputerze |
 | W logu brak linii `RAMKA` | 1) CC1101 to na pewno **868 MHz**? 2) przewody SCK/MOSI/MISO/CSN/GDO0 — porównaj z tabelą; 3) VCC na **3V3**; 4) antena przykręcona; 5) w logu szukaj `CC1101` błędów SPI (np. `chip not found` = złe połączenie SPI) |
 | Są ramki, ale żadna nie jest „moja” (prefiks/numer się nie zgadzają) | weź ramkę z innym ID (najsilniejszy sygnał), powtórz sekcję 7 |
@@ -439,6 +439,11 @@ binary_sensor:
 ---
 
 ## 12. Uwagi końcowe
+
+- **Konfiguracja jest sprawdzona**: workflow `.github/workflows/esphome-water-meter.yml` w tym repo
+  uruchamia `esphome config` (walidacja) i `esphome compile` (pełna kompilacja). Bieg z 30.10.2026
+  zakończył się sukcesem: ESP-IDF 5.5.6, firmware 1,18 MB, 64% flash, 28% RAM.
+  Każda zmiana w `ha-water-meter/` uruchamia go ponownie — zielony znaczek = można wgrywać.
 
 - Odczyt przychodzi tylko wtedy, gdy nakładka nadaje — to nie jest przepływomierz w czasie
   rzeczywistym, ale przy nadawaniu co 8 s różnica jest nieistotna.
