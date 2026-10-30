@@ -1,0 +1,157 @@
+# ESP32 + CC1101 (868 MHz) -> Home Assistant
+# Licznik: Diehl Metering z nakładką radiową IZAR RC 868 I R4 PL (S/N nakładki 06436027)
+# Komponent: SzczepanLeon/esphome-components (wersja 5, gałąź main), sterownik "izar"
+
+substitutions:
+  name: licznik-wody
+  friendly_name: Licznik wody
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf          # komponent wmbus v5 działa tylko na esp-idf (bez Arduino)
+
+external_components:
+  - source: github://SzczepanLeon/esphome-components@main
+    components: [wmbus_radio, wmbus_common, wmbus_meter]
+    refresh: 1d
+
+logger:
+  level: DEBUG
+  logs:
+    CC1101: ERROR          # wycisza ostrzeżenia "RX timeout after 0 bytes"
+
+api:
+  encryption:
+    key: !secret api_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  power_save_mode: none    # radio odbiera ciągle - oszczędzanie Wi-Fi przeszkadza
+  ap:
+    ssid: ${name}-ap
+    password: !secret ap_password
+
+captive_portal:
+
+# --- CC1101 ---------------------------------------------------------------
+# Połączenia (CC1101 -> ESP32):
+#   VCC  -> 3V3   (NIE 5V!)
+#   GND  -> GND
+#   SCK  -> GPIO18
+#   MOSI -> GPIO23   (na niektórych płytkach opisane SI)
+#   MISO -> GPIO19   (SO)
+#   CSN  -> GPIO5    (CS)
+#   GDO0 -> GPIO4    (przerwanie, irq_pin)
+#   GDO2 -> niepodłączone (komponent go nie używa)
+spi:
+  clk_pin: GPIO18
+  mosi_pin: GPIO23
+  miso_pin: GPIO19
+
+wmbus_radio:
+  radio_type: CC1101
+  cs_pin:
+    number: GPIO5
+    ignore_strapping_warning: true
+  irq_pin: GPIO4
+  frequency: 868.950MHz    # tryb T1 - tak nadaje IZAR
+  # ETAP 1: loguje KAŻDĄ odebraną ramkę, żeby znaleźć ID licznika.
+  # Po ustaleniu ID możesz ten blok zakomentować.
+  on_frame:
+    - then:
+        - logger.log:
+            format: "RAMKA RSSI=%ddBm %s"
+            args: [ 'frame->rssi()', 'frame->as_hex().c_str()' ]
+
+wmbus_common:
+  drivers:
+    - izar                 # kompiluj tylko potrzebny sterownik
+
+# --- Licznik --------------------------------------------------------------
+wmbus_meter:
+  - id: woda
+    # ID radiowe wM-Bus - INNE niż numery z naklejek! Odczytaj je z logów
+    # (ETAP 1, instrukcja w README.md) i wpisz tutaj, np. 0x21242472.
+    meter_id: 0x00000000
+    type: izar
+    # Klucz NIE jest potrzebny: sterownik izar ma wbudowane domyślne klucze
+    # PRIOS Diehla. Wpisz key: tylko jeśli wodociągi zmieniły klucz.
+
+sensor:
+  - platform: wmbus_meter
+    parent_id: woda
+    field: total_m3
+    name: Woda - stan licznika
+    unit_of_measurement: "m³"
+    device_class: water
+    state_class: total_increasing
+    accuracy_decimals: 3
+    icon: mdi:water
+
+  - platform: wmbus_meter
+    parent_id: woda
+    field: last_month_total_m3
+    name: Woda - stan na koniec miesiąca
+    unit_of_measurement: "m³"
+    device_class: water
+    accuracy_decimals: 3
+
+  - platform: wmbus_meter
+    parent_id: woda
+    field: remaining_battery_life_y
+    name: Woda - bateria nakładki
+    unit_of_measurement: "lat"
+    accuracy_decimals: 1
+    entity_category: diagnostic
+
+  - platform: wmbus_meter
+    parent_id: woda
+    field: rssi_dbm
+    name: Woda - sygnał radiowy
+    unit_of_measurement: "dBm"
+    device_class: signal_strength
+    state_class: measurement
+    entity_category: diagnostic
+
+  - platform: wifi_signal
+    name: Licznik wody - Wi-Fi
+    update_interval: 120s
+    entity_category: diagnostic
+
+text_sensor:
+  # Kontrola, że to Twój licznik: powinno pokazać C23FA / 096256 (z tarczy)
+  - platform: wmbus_meter
+    parent_id: woda
+    field: prefix
+    name: Woda - prefiks licznika
+    entity_category: diagnostic
+
+  - platform: wmbus_meter
+    parent_id: woda
+    field: serial_number
+    name: Woda - numer licznika
+    entity_category: diagnostic
+
+  - platform: wmbus_meter
+    parent_id: woda
+    field: current_alarms
+    name: Woda - alarmy (wyciek, cofka, ingerencja)
+
+  - platform: wmbus_meter
+    parent_id: woda
+    field: previous_alarms
+    name: Woda - alarmy wcześniejsze
+
+binary_sensor:
+  - platform: status
+    name: Licznik wody - online
